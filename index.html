@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Fasfood — Digital menus and WhatsApp ordering for South African shops. Start for free, transparent pricing, real-time orders.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="theme-color" content="#FF7B31">
+    <title>Fasfood — Digital Menus for South Africa | WhatsApp Ordering</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f7; font-family: 'Inter', sans-serif; overflow-x: hidden; color: #1d1d1f; -webkit-font-smoothing: antialiased; }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #e8e8ed; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #f05a2c; border-radius: 10px; }
+        .navbar { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.96); backdrop-filter: blur(18px); padding: 0.75rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1100; border-bottom: 1px solid rgba(0,0,0,0.05); transition: all 0.25s ease; }
+        .navbar.scrolled { padding: 0.5rem 5%; background: rgba(255,255,255,0.98); }
+        .logo { height: 70px; width: auto; transition: opacity 0.2s ease; object-fit: contain; }
+        .logo:hover { opacity: 0.8; }
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #1d1d1f; font-weight: 500; font-size: 1rem; transition: color 0.2s ease; cursor: pointer; }
+        .nav-links a:hover { color: #f05a2c; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #1d1d1f; }
+        @media (max-width: 768px) {
+            .navbar { padding: 0.75rem 1.5rem; }
+            .nav-links { position: fixed; top: 72px; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); flex-direction: column; padding: 2rem; gap: 1.8rem; transform: translateY(-150%); transition: 0.3s cubic-bezier(0.2,0.9,0.4,1.1); border-radius: 0 0 24px 24px; z-index: 1000; }
+            .nav-links.open { transform: translateY(0); }
+            .mobile-menu-btn { display: block; }
+        }
+        .hero { min-height: 90vh; display: flex; align-items: center; padding: 120px 5% 80px; background: #f5f5f7; }
+        .hero-content { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .hero-text h1 { font-size: 3.8rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; letter-spacing: -0.02em; }
+        .gradient-text { background: linear-gradient(135deg, #f05a2c, #ff8c42); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(240,90,44,0.12); color: #f05a2c; padding: 0.4rem 1.2rem; border-radius: 40px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem; }
+        .hero-text p { font-size: 1.1rem; color: #6e6e73; margin-bottom: 2rem; line-height: 1.5; }
+        .cta-btn { background: #f05a2c; color: white; border: none; padding: 0.9rem 2.4rem; border-radius: 980px; font-weight: 600; font-size: 1rem; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+        .cta-btn:hover { background: #d94b1f; }
+        .tablet-mockup img { width: 100%; max-width: 540px; border-radius: 36px; }
+        .trust-badge { display: flex; gap: 1.8rem; margin-top: 2rem; flex-wrap: wrap; }
+        .trust-badge span { font-size: 0.85rem; font-weight: 500; color: #4b4b50; display: flex; align-items: center; gap: 8px; }
+        @media (max-width: 968px) { .hero-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; } .hero-text h1 { font-size: 2.6rem; } .trust-badge { justify-content: center; } }
+        .light-app-simple { padding: 70px 5%; background: white; }
+        .simple-container { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .simple-container h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .simple-container p { color: #6e6e73; max-width: 600px; margin: 0 auto 2rem auto; }
+        .two-images { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 3.5rem; }
+        .img-card { flex: 0 1 280px; border-radius: 28px; overflow: hidden; background: #fff; transition: transform 0.25s; }
+        .img-card:hover { transform: translateY(-5px); }
+        .img-card img { width: 100%; height: auto; display: block; }
+        .simple-wa-btn { background: #25D366; color: white; border: none; padding: 0.9rem 2.2rem; border-radius: 980px; font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
+        .simple-wa-btn:hover { background: #20b859; }
+        .pricing-section { padding: 80px 5% 100px; background: #ffffff; border-top: 1px solid #f0f0f0; }
+        .section-title { text-align: center; font-size: 2.6rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+        .section-sub { text-align: center; color: #6e6e73; margin-bottom: 3rem; font-size: 1.1rem; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 2rem; max-width: 1280px; margin: 0 auto; }
+        .pricing-card { background: #ffffff; border-radius: 28px; padding: 2rem 1.8rem; transition: all 0.3s ease; border: 1px solid #ececf0; position: relative; }
+        .pricing-card:hover { transform: translateY(-8px); border-color: #f05a2c40; }
+        .pricing-card.popular { border: 2px solid #f05a2c; background: #fffaf5; }
+        .popular-badge { position: absolute; top: -12px; right: 24px; background: #f05a2c; color: white; padding: 0.25rem 1rem; border-radius: 40px; font-size: 0.7rem; font-weight: 700; }
+        .plan-name { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .plan-price { font-size: 2.6rem; font-weight: 800; margin: 0.5rem 0; }
+        .plan-price small { font-size: 0.9rem; font-weight: 500; color: #86868b; }
+        .plan-desc { color: #6e6e73; font-size: 0.85rem; margin-bottom: 1.2rem; border-bottom: 1px solid #e8e8ed; padding-bottom: 1rem; }
+        .feature-list { list-style: none; padding: 0; margin: 1.2rem 0; }
+        .feature-list li { padding: 0.5rem 0; display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: #2c2c2e; }
+        .feature-list i { color: #f05a2c; width: 20px; }
+        .savings-badge { background: #2e7d32; color: white; padding: 0.2rem 0.8rem; border-radius: 40px; font-size: 0.7rem; font-weight: 600; margin-left: 0.6rem; }
+        .pricing-btn { width: 100%; background: #f05a2c; color: white; border: none; padding: 0.8rem; border-radius: 980px; font-weight: 600; margin-top: 1rem; transition: all 0.2s; cursor: pointer; }
+        .pricing-btn:hover { background: #121212; }
+        .fine-print { text-align: center; margin-top: 3rem; font-size: 0.75rem; color: #86868b; }
+        .advert-link { cursor: pointer; color: #f05a2c; font-weight: 600; margin-left: 0.3rem; }
+        .chat-section { background: linear-gradient(135deg, #fff8f5 0%, #ffffff 100%); padding: 70px 5%; border-top: 1px solid #f0e6e0; }
+        .chat-container { max-width: 1000px; margin: 0 auto; }
+        .rating-summary { background: white; border-radius: 28px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #f0e6e0; text-align: center; }
+        .average-rating { font-size: 3rem; font-weight: 800; color: #f05a2c; }
+        .star-rating-display { color: #ffc107; font-size: 1.4rem; letter-spacing: 4px; }
+        .review-count { color: #6e6e73; font-size: 0.85rem; }
+        .comment-form { background: white; border-radius: 28px; padding: 1.8rem; margin-bottom: 2rem; border: 1px solid #f0e6e0; }
+        .rating-input { display: flex; gap: 8px; font-size: 2rem; cursor: pointer; margin-bottom: 1rem; }
+        .rating-input i { color: #ddd; transition: color 0.15s; }
+        .rating-input i.hover, .rating-input i.selected { color: #ffc107; }
+        .comments-list { max-height: 500px; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+        .comment-card { background: white; border-radius: 20px; padding: 1.2rem; border: 1px solid #f0e6e0; transition: all 0.2s; }
+        .comment-card:hover { transform: translateY(-2px); }
+        .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; }
+        .comment-name { font-weight: 700; color: #1d1d1f; }
+        .comment-stars { color: #ffc107; font-size: 0.85rem; }
+        .comment-date { font-size: 0.7rem; color: #aaa; }
+        .comment-text { color: #3a3a3e; font-size: 0.9rem; line-height: 1.4; margin-top: 0.5rem; }
+        .empty-chat { text-align: center; padding: 3rem; color: #aaa; background: white; border-radius: 28px; }
+        .error-banner { background: #fee; color: #c00; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; text-align: center; font-size: 0.85rem; border: 1px solid #fcc; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-container { background: white; max-width: 500px; width: 90%; border-radius: 32px; padding: 2rem; position: relative; animation: slideUp 0.25s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
+        .modal-close { position: absolute; top: 18px; right: 22px; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #8e8e93; }
+        .advert-option { background: #f8f8fc; padding: 1rem 1.2rem; border-radius: 20px; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s; border: 1px solid #e8e8ed; }
+        .advert-option:hover { background: #fff3ed; border-color: #f05a2c; transform: translateX(4px); }
+        .industry-tag { display: inline-block; background: #eef2ff; color: #1e40af; border-radius: 20px; padding: 0.2rem 0.7rem; font-size: 0.7rem; font-weight: 500; margin-right: 6px; margin-top: 6px; }
+        .price-badge { background: #e6f7e6; color: #1e7e34; border-radius: 30px; font-size: 0.7rem; padding: 0.2rem 0.7rem; font-weight: 600; margin-left: 8px; display: inline-block; }
+        footer { text-align: center; padding: 2rem; background: #f5f5f7; color: #6e6e73; font-size: 0.75rem; border-top: 0.5px solid #e2e2e6; }
+        .form-control-custom { width: 100%; padding: 12px 16px; border-radius: 16px; border: 1px solid #d2d2d7; margin-bottom: 1rem; font-size: 0.9rem; font-family: 'Inter', sans-serif; }
+        .form-control-custom:focus { outline: none; border-color: #f05a2c; }
+        @media (max-width: 480px) { .section-title { font-size: 2rem; } .plan-price { font-size: 2rem; } }
+
+    .verified-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.verified-badge {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #1d9bf0;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <img src="assets/images/Logo-main-02.png" alt="Fasfood" class="logo" onerror="this.src='https://placehold.co/160x50/f05a2c/white?text=Fasfood'">
+    <div class="nav-links" id="navLinks">
+        <a href="#" id="pricingNavBtn">Pricing</a>
+        <a href="#" id="advertNavBtn">Advertise</a>
+        <a href="#" id="manualBtn">Manual</a>
+        <a href="#" id="chatNavBtn">Reviews</a>
+        <a href="about-us.html">About</a>
+    </div>
+    <button class="mobile-menu-btn" id="menuBtn">☰</button>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <div class="hero-badge"><i class="fas fa-check-circle"></i> Trusted by 500+ SA local shops</div>
+            <h1>Your menu, <span class="gradient-text">your profit.</span></h1>
+            <p>Fasfood connects shops with loyal customers in their area. <br> There's good taste in every local shop.</p>
+            <div><button class="cta-btn" id="heroRegisterBtn"><i class="fas fa-store"></i> Register your Shop</button></div>
+            <div class="trust-badge">
+                <span><i class="fas fa-check-circle" style="color:#2e7d32;"></i> No setup fee</span>
+                <span><i class="fas fa-chart-line"></i> Real-time orders</span>
+                <span><i class="fas fa-headset"></i> Local support</span>
+            </div>
+        </div>
+        <div class="tablet-mockup"><img src="/assets/images/devices.png" alt="Fasfood Tablet App" onerror="this.src='https://placehold.co/500x400/eee/f05a2c?text=Fasfood+App'"></div>
+    </div>
+</section>
+
+<section class="light-app-simple">
+    <div class="simple-container">
+        <h2>Connect with WhatsApp</h2>
+        <p>Your digital menu, orders straight to your Business WhatsApp.</p>
+        <div class="two-images">
+            <div class="img-card"><img src="/assets/images/wh1.png" alt="WhatsApp menu preview" onerror="this.src='https://placehold.co/300x600/f8f8f8/25D366?text=Menu'"></div>
+            <div class="img-card"><img src="/assets/images/wh2.png" alt="Order notifications" onerror="this.src='https://placehold.co/300x600/f8f8f8/25D366?text=Orders'"></div>
+        </div>
+        <button class="simple-wa-btn" id="lightAppSimpleBtn"><i class="fab fa-whatsapp"></i> Register Light App · R49/month</button>
+    </div>
+</section>
+
+<section class="pricing-section" id="pricingSection">
+    <h2 class="section-title"><span style="color: #f05a2c;">Simple</span> transparent pricing.</h2>
+    <p class="section-sub">First month free. Cancel anytime.</p>
+    <div class="pricing-grid">
+        <div class="pricing-card"><div class="plan-name">Lite</div><div class="plan-price">R49 <small>/month</small></div><div class="plan-desc">WhatsApp ordering • No dashboard</div><ul class="feature-list"><li><i class="fab fa-whatsapp"></i> Orders to WhatsApp</li><li><i class="fas fa-bolt"></i> 15 menu items max</li><li><i class="fas fa-mobile-alt"></i> Mobile-friendly menu</li><li><i class="fas fa-ban"></i> No login required</li></ul><button class="pricing-btn selectPlanBtn" data-plan="Lite">Choose Lite</button></div>
+        <div class="pricing-card popular"><div class="popular-badge">Most Popular</div><div class="plan-name">Smart Menu</div><div class="plan-price">R99 <small>/month</small></div><div class="plan-desc">5–10 menus • +R10 per extra menu</div><ul class="feature-list"><li><i class="fas fa-check-circle"></i> Full dashboard</li><li><i class="fas fa-chart-line"></i> Real-time tracking</li><li><i class="fas fa-edit"></i> Menu builder</li><li><i class="fas fa-cash-register"></i> <strong>Till Management</strong> <span class="savings-badge">Free</span></li><li><i class="fas fa-coins"></i> Example: 12 items = R120</li></ul><button class="pricing-btn selectPlanBtn" data-plan="Smart Menu">Choose Smart Menu</button></div>
+        <div class="pricing-card"><div class="plan-name">Till Management</div><div class="plan-price">R0 <small>/month</small></div><div class="plan-desc">Free with Smart Menu</div><ul class="feature-list"><li><i class="fas fa-receipt"></i> POS system</li><li><i class="fas fa-shopping-bag"></i> Stock tracking</li><li><i class="fas fa-print"></i> Receipt printing</li><li><i class="fas fa-gem"></i> Was R50 → Now Free</li></ul><button class="pricing-btn" id="tillInfoBtn">Learn more</button></div>
+    </div>
+    <div class="fine-print"><i class="fas fa-info-circle"></i> First month zero cost. Free setup support. <span class="advert-link" id="advertTriggerInline"><i class="fas fa-bullhorn"></i> Advertise from R5/day</span></div>
+</section>
+
+<section class="chat-section" id="reviewsSection">
+    <div class="chat-container">
+        <h2 class="section-title" style="font-size:2rem;"><span style="color:#f05a2c;">Community</span> Reviews</h2>
+        <p class="section-sub" style="margin-bottom:1.5rem;">Share your experience — rate and review Fasfood</p>
+        <div id="firebaseError" class="error-banner" style="display:none;"></div>
+        <div class="rating-summary" id="ratingSummary"><div class="average-rating" id="avgRating">0.0</div><div class="star-rating-display" id="avgRatingStars">☆☆☆☆☆</div><div class="review-count" id="totalReviews">0 reviews</div></div>
+        <div class="comment-form"><h5 style="font-weight:600; margin-bottom:1rem;">Leave a review</h5><div class="rating-input" id="starSelector"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div><input type="text" id="reviewerName" class="form-control-custom" placeholder="Your name (optional)" maxlength="50"><textarea id="reviewText" class="form-control-custom" rows="3" placeholder="Share your experience with Fasfood..."></textarea><button id="submitReviewBtn" class="cta-btn" style="background:#f05a2c; padding:0.7rem 1.5rem;">Post Review</button></div>
+        <div class="comments-list" id="commentsList"><div class="empty-chat"><i class="fas fa-comments"></i> Loading reviews...</div></div>
+    </div>
+</section>
+
+<div class="modal-overlay" id="advertModal"><div class="modal-container"><button class="modal-close" id="closeAdvertModal">&times;</button><h3 style="margin-bottom:0.5rem; font-weight:700;"><i class="fas fa-bullhorn" style="color:#f05a2c"></i> Advertise on Fasfood</h3><p class="mb-3" style="font-size:0.85rem; color:#5e5e66;">Reach thousands of local customers daily</p><div class="advert-option" data-advert="Advert 2.0" data-price="5" data-type="registered"><strong>🚀 Advert 2.0</strong> — <span style="font-size:1.3rem; font-weight:800;">R5/day</span> <span class="price-badge">For registered shops</span><br><small>Perfect for daily specials, new menu items. <i class="fas fa-store"></i> Registered Fasfood shops only.</small></div><div class="advert-option" data-advert="Local Spotlight (External)" data-price="15" data-type="external"><strong>⭐ Local Spotlight</strong> — <span style="font-size:1.3rem; font-weight:800;">R15/day</span> <span class="price-badge">External business</span><br><small>Advertise any business or service. Ideal for:</small><div style="margin-top:8px;"><span class="industry-tag"><i class="fas fa-building"></i> Government ads</span><span class="industry-tag"><i class="fas fa-tshirt"></i> Clothing shops</span><span class="industry-tag"><i class="fas fa-car"></i> Vehicle dealers</span><span class="industry-tag"><i class="fas fa-tools"></i> Services</span><span class="industry-tag"><i class="fas fa-megaphone"></i> Public notices</span></div><small class="text-muted d-block mt-2"><i class="fab fa-whatsapp"></i> We'll contact you via WhatsApp — no email needed.</small></div><div class="mt-3 small text-muted text-center"><i class="fas fa-paint-brush"></i> Free design support & targeting assistance</div></div></div>
+
+<div class="modal-overlay" id="contactModal"><div class="modal-container"><button class="modal-close" id="closeContactModal">&times;</button><h4 style="margin-bottom:0.25rem;" id="modalTitle"><i class="fab fa-whatsapp" style="color:#25D366"></i> Start your campaign</h4><p style="font-size:0.85rem; color:#5e5e66; margin-bottom:1.5rem;" id="modalSubtext">We'll send proof & invoice within 24 hours</p><div id="contactFieldContainer"><input type="email" id="contactEmail" class="form-control-custom" placeholder="Shop email address" autocomplete="email"></div><input type="number" id="contactDays" class="form-control-custom" placeholder="Number of days (1-30)" value="3" min="1" max="30"><div id="selectedAdvertInfo" class="small text-muted mb-3" style="text-align:center; background:#f8f8fc; padding:8px; border-radius:16px;"></div><button id="sendContactRequest" class="cta-btn" style="background:#25D366; width:100%; justify-content:center;"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button><p class="text-center mt-2 small text-muted">We'll reach out to confirm details & design preferences</p></div></div>
+
+<footer><p><i class="far fa-copyright"></i> 2026 Fasfood — Built by 96 Studios | <span class="advert-link" id="footerAdvertLink">Advertise from R5/day</span></p></footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+  
+  const firebaseConfig = { 
+    apiKey: "AIzaSyCJRV54QwK_D35fyQfqIfLvFy9I82Dkjh0", 
+    authDomain: "fasfood-wb-comments.firebaseapp.com", 
+    projectId: "fasfood-wb-comments", 
+    storageBucket: "fasfood-wb-comments.firebasestorage.app", 
+    messagingSenderId: "343074678840", 
+    appId: "1:343074678840:web:9ea76c1cb186c56d4c1ecd", 
+    measurementId: "G-7T74LP9KXH" 
+  };
+  
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const reviewsRef = collection(db, "reviews");
+  
+  const errorDiv = document.getElementById('firebaseError');
+  const commentsList = document.getElementById('commentsList');
+  const avgRatingSpan = document.getElementById('avgRating');
+  const avgRatingStarsSpan = document.getElementById('avgRatingStars');
+  const totalReviewsSpan = document.getElementById('totalReviews');
+  const submitBtn = document.getElementById('submitReviewBtn');
+  const reviewerNameInput = document.getElementById('reviewerName');
+  const reviewTextInput = document.getElementById('reviewText');
+  const starIcons = document.querySelectorAll('#starSelector i');
+  let selectedRating = 0;
+  
+  // Star rating UI
+  starIcons.forEach(star => { 
+    star.addEventListener('click', () => { selectedRating = parseInt(star.getAttribute('data-value')); updateStarUI(); }); 
+    star.addEventListener('mouseenter', () => { const val = parseInt(star.getAttribute('data-value')); starIcons.forEach((s, idx) => { if (idx < val) s.classList.add('hover'); else s.classList.remove('hover'); }); }); 
+    star.addEventListener('mouseleave', () => { starIcons.forEach(s => s.classList.remove('hover')); updateStarUI(); }); 
+  });
+  
+  function updateStarUI() { 
+    starIcons.forEach((star, idx) => { 
+      if (idx < selectedRating) { 
+        star.classList.add('selected'); 
+        star.classList.remove('far'); 
+        star.classList.add('fas'); 
+      } else { 
+        star.classList.remove('selected'); 
+        star.classList.remove('fas'); 
+        star.classList.add('far'); 
+      } 
+    }); 
+  }
+  
+function escapeHtml(str) { 
+  if(!str) return ''; 
+
+  return str.replace(/[&<>]/g, function(m){ 
+    if(m==='&') return '&amp;'; 
+    if(m==='<') return '&lt;'; 
+    if(m==='>') return '&gt;'; 
+    return m;
+  });
+}
+
+/*
+RULES:
+- Normal users cannot use @
+- .@ allows verified/admin names
+- .@Kaygdesigner -> @Kaygdesigner
+*/
+
+function sanitizeReviewName(name) {
+  if (!name) return 'Anonymous';
+
+  name = name.trim();
+
+  // Allow .@
+  if (name.startsWith('.@')) {
+    return '@' + name.substring(2);
+  }
+
+  // Remove all @ from normal users
+  return name.replace(/@/g, '');
+}
+
+function renderReviewName(name) {
+  const cleanName = sanitizeReviewName(name);
+  const safeName = escapeHtml(cleanName);
+
+  // Verified badge for @ users
+  if (cleanName.includes('@')) {
+    return `
+      <span class="verified-user">
+        ${safeName}
+        <span class="verified-badge">
+          <i class="fas fa-check"></i>
+        </span>
+      </span>
+    `;
+  }
+
+  return safeName;
+}
+
+  function updateUI(reviewsArray) {
+    if (!reviewsArray || reviewsArray.length === 0) { 
+      commentsList.innerHTML = '<div class="empty-chat"><i class="fas fa-comments"></i> No reviews yet. Be the first!</div>'; 
+      avgRatingSpan.innerText = '0.0'; 
+      avgRatingStarsSpan.innerText = '☆☆☆☆☆'; 
+      totalReviewsSpan.innerText = '0 reviews'; 
+      return; 
+    }
+    const sorted = [...reviewsArray].sort((a,b) => b.timestamp - a.timestamp);
+    const totalRatings = reviewsArray.reduce((sum, r) => sum + r.rating, 0);
+    const avg = totalRatings / reviewsArray.length;
+    avgRatingSpan.innerText = avg.toFixed(1);
+    totalReviewsSpan.innerText = `${reviewsArray.length} reviews`;
+    const fullStars = Math.round(avg); 
+    let starDisplay = ''; 
+    for (let i=0; i<5; i++) starDisplay += i < fullStars ? '★' : '☆';
+    avgRatingStarsSpan.innerText = starDisplay;
+    commentsList.innerHTML = '';
+    sorted.forEach(rev => { 
+      const date = new Date(rev.timestamp); 
+      const formattedDate = date.toLocaleDateString('en-ZA'); 
+      let starsHtml = '';
+
+        const isFasfoodReply =
+        (rev.name || '').includes('.@');
+
+        if (isFasfoodReply) {
+        starsHtml = 'From Fasfood';
+        } else {
+        for (let i = 0; i < 5; i++) {
+            starsHtml += i < rev.rating ? '★' : '☆';
+        }
+        } 
+      const card = document.createElement('div'); 
+      card.className = 'comment-card'; 
+      card.innerHTML = `<div class="comment-header"><span class="comment-name">${renderReviewName(rev.name || 'Anonymous')}</span><div class="comment-stars">${starsHtml}</div><span class="comment-date">${formattedDate}</span></div><div class="comment-text">${escapeHtml(rev.comment)}</div>`; 
+      commentsList.appendChild(card); 
+    });
+  }
+  
+  // Listen to Firestore with error handling
+  try {
+    onSnapshot(query(reviewsRef, orderBy("timestamp", "desc")), 
+      (snapshot) => { 
+        errorDiv.style.display = 'none';
+        let reviews = []; 
+        snapshot.forEach(doc => reviews.push({ id: doc.id, ...doc.data() })); 
+        updateUI(reviews); 
+      }, 
+      (error) => { 
+        console.error("Firestore error:", error);
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Unable to load reviews. Please make sure Firebase Firestore rules are set to allow read/write. <a href="#" onclick="alert('Go to Firebase Console → Firestore Database → Rules → Set allow read, write: if true;')" style="color:#f05a2c;">Fix permissions</a>`;
+        commentsList.innerHTML = '<div class="empty-chat">⚠️ Unable to load reviews. Please check Firebase configuration.</div>';
+      }
+    );
+  } catch(e) {
+    errorDiv.style.display = 'block';
+    errorDiv.innerHTML = `Firebase error: ${e.message}`;
+  }
+  
+ submitBtn.addEventListener('click', async () => { 
+  const comment = reviewTextInput.value.trim(); 
+
+  if (!comment) { 
+    alert("Please write a comment."); 
+    return; 
+  } 
+
+const name = reviewerNameInput.value.trim();
+
+// Allow no rating ONLY for names containing ".@"
+if (
+  selectedRating === 0 &&
+  !name.includes('.@')
+) {
+  alert("Please select a star rating.");
+  return;
+}
+
+  const finalName = name === "" ? "Anonymous" : name.substring(0, 50); 
+
+  submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    
+    try { 
+      await addDoc(reviewsRef, { 
+        name: finalName, 
+        comment: comment, 
+        rating: selectedRating, 
+        timestamp: Date.now() 
+      }); 
+      reviewTextInput.value = ''; 
+      reviewerNameInput.value = ''; 
+      selectedRating = 0; 
+      updateStarUI(); 
+      alert("✅ Thank you for your review!"); 
+    } catch(e) { 
+      console.error("Submit error:", e);
+      alert("❌ Error submitting review: " + e.message + "\n\nPlease ensure Firebase Firestore rules allow writes. Go to Firebase Console → Firestore Database → Rules and set:\n\nallow read, write: if true;"); 
+      errorDiv.style.display = 'block';
+      errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Cannot save review. Firebase permissions error. Please update Firestore rules to allow writes.`;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Post Review';
+    }
+  });
+  
+  // Navbar and other JS (existing functionality preserved)
+  window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if (window.scrollY > 30) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+  const menuBtn = document.getElementById('menuBtn'); const navLinksDiv = document.getElementById('navLinks');
+  if(menuBtn && navLinksDiv){ menuBtn.addEventListener('click', () => navLinksDiv.classList.toggle('open')); document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => navLinksDiv.classList.remove('open')); }); }
+  document.getElementById('pricingNavBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('pricingSection').scrollIntoView({ behavior: 'smooth' }); });
+  document.getElementById('chatNavBtn')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' }); });
+  const registerRedirect = (planName = 'Fasfood') => { alert(` ${planName} — First month FREE! Redirecting...`); window.location.href = "register.html"; };
+  document.querySelectorAll('#heroRegisterBtn, .selectPlanBtn').forEach(btn => { btn.addEventListener('click', () => { const plan = btn.getAttribute('data-plan') || 'Fasfood'; registerRedirect(plan); }); });
+  document.getElementById('lightAppSimpleBtn')?.addEventListener('click', () => { window.open(`https://wa.me/27817925033?text=Hi%20Fasfood!%20I%20want%20to%20register%20for%20the%20*Light%20App*.`, '_blank'); alert("💬 WhatsApp opened!"); });
+  document.getElementById('tillInfoBtn')?.addEventListener('click', () => { alert("📊 Till Management is FREE with Smart Menu!\n\n✅ Complete POS system\n✅ Stock tracking\n✅ Receipt printing\n✅ Kitchen display integration"); });
+  document.getElementById('manualBtn')?.addEventListener('click', (e) => { e.preventDefault(); if(confirm("📘 Download Fasfood manual.pdf?")) { const a = document.createElement('a'); a.href = 'manual.pdf'; a.download = 'manual.pdf'; document.body.appendChild(a); a.click(); document.body.removeChild(a); } });
+  
+  // Advert logic
+  const advertModal = document.getElementById('advertModal'); const contactModal = document.getElementById('contactModal'); const contactFieldContainer = document.getElementById('contactFieldContainer'); const modalTitle = document.getElementById('modalTitle'); const modalSubtext = document.getElementById('modalSubtext'); let selectedPlan = 'Advert 2.0'; let selectedRate = 5; let selectedType = 'registered'; const selectedInfoDiv = document.getElementById('selectedAdvertInfo'); if(selectedInfoDiv) selectedInfoDiv.innerHTML = `✅ Selected: ${selectedPlan} · R${selectedRate}/day`;
+  const openAdvert = () => { if(advertModal) advertModal.classList.add('active'); };
+  document.getElementById('advertTriggerInline')?.addEventListener('click', openAdvert);
+  document.getElementById('advertNavBtn')?.addEventListener('click', (e) => { e.preventDefault(); openAdvert(); });
+  document.getElementById('footerAdvertLink')?.addEventListener('click', openAdvert);
+  document.getElementById('closeAdvertModal')?.addEventListener('click', () => advertModal.classList.remove('active'));
+  document.getElementById('closeContactModal')?.addEventListener('click', () => contactModal.classList.remove('active'));
+  
+  function updateContactField() { if (selectedType === 'external') { contactFieldContainer.innerHTML = `<input type="tel" id="contactWhatsApp" class="form-control-custom" placeholder="Your WhatsApp number (e.g., 0712345678)" autocomplete="tel"><small class="text-muted d-block mt-1 mb-2" style="font-size:0.7rem;"><i class="fab fa-whatsapp"></i> We'll contact you via WhatsApp within 24 hours</small>`; modalTitle.innerHTML = '<i class="fab fa-whatsapp" style="color:#25D366"></i> Local Spotlight — External Business'; modalSubtext.innerHTML = 'Enter your WhatsApp number — we\'ll send design proof & invoice directly.'; } else { contactFieldContainer.innerHTML = `<input type="email" id="contactEmail" class="form-control-custom" placeholder="Shop email address" autocomplete="email"><small class="text-muted d-block mt-1 mb-2" style="font-size:0.7rem;"><i class="fas fa-envelope"></i> We'll send invoice & proof to your email</small>`; modalTitle.innerHTML = '<i class="fab fa-whatsapp" style="color:#25D366"></i> Advert 2.0 — Registered Shop'; modalSubtext.innerHTML = 'Enter your shop email — we\'ll send proof & invoice within 24 hours.'; } }
+  document.querySelectorAll('.advert-option').forEach(opt => { opt.addEventListener('click', () => { selectedPlan = opt.getAttribute('data-advert'); selectedRate = parseInt(opt.getAttribute('data-price')); selectedType = opt.getAttribute('data-type'); if(selectedInfoDiv) selectedInfoDiv.innerHTML = `✅ Selected: ${selectedPlan} · R${selectedRate}/day`; updateContactField(); advertModal.classList.remove('active'); contactModal.classList.add('active'); }); });
+  document.getElementById('sendContactRequest')?.addEventListener('click', () => { const days = parseInt(document.getElementById('contactDays')?.value) || 1; if (days < 1 || days > 30) return alert("Days must be between 1 and 30."); let contactValue = '', contactType = ''; if (selectedType === 'external') { const waInput = document.getElementById('contactWhatsApp'); if (!waInput) return; contactValue = waInput.value.trim(); contactType = 'WhatsApp'; if (!contactValue) return alert("Please enter your WhatsApp number"); let cleanNumber = contactValue.replace(/\s+/g, ''); if (!cleanNumber.match(/^[0-9]{9,12}$/)) return alert("Please enter a valid SA mobile number (e.g., 0712345678)"); } else { const emailInput = document.getElementById('contactEmail'); if (!emailInput) return; contactValue = emailInput.value.trim(); contactType = 'Email'; if (!contactValue || !contactValue.includes('@')) return alert("Please enter a valid email address."); } const total = selectedRate * days; const planNote = selectedType === 'registered' ? "%0A%0A⚠️ Advert 2.0 is for registered Fasfood shops only." : "%0A%0A✅ External business advert (clothing, vehicles, government ads, services, etc.)."; const msg = `Fasfood Advert Request%0A%0APlan: ${selectedPlan}%0ADays: ${days}%0ATotal: R${total}%0A${contactType}: ${contactValue}${planNote}%0A%0APlease send design proof & payment link.`; window.open(`https://wa.me/27817925033?text=${msg}`, '_blank'); alert("✓ Request sent! Our team will contact you within 24 hours."); contactModal.classList.remove('active'); document.getElementById('contactDays').value = '3'; });
+  window.onclick = (e) => { if(e.target === advertModal) advertModal.classList.remove('active'); if(e.target === contactModal) contactModal.classList.remove('active'); };
+  updateContactField();
+</script>
+</body>
+</html>

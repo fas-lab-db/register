@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Fasfood · About Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #fffaf500;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1.5rem;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            position: fixed;
+            top: 0px;
+            left: -20px;
+            z-index: 1100;
+            flex-wrap: wrap;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            font-weight: 0;
+            color: #1e1e2f;
+            transition: 0.2s ease;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #2b2b3b;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: #f0572d;
+        }
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0;
+            z-index: 1200; 
+        }
+        .hamburger-icon span {
+            width: 100%;
+            height: 3px;
+            background-color: #1e1e2f;
+            border-radius: 3px;
+            transition: 0.2s;
+        }
+        @media (max-width: 1024px) { 
+            .top-nav-bar {
+                justify-content: space-between;
+                left: 0;                       
+                padding: 0.75rem 1.5rem;
+            }
+            .nav-links {
+                position: fixed;
+                top: 20px;               
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.97);
+                backdrop-filter: blur(8px);
+                flex-direction: column;
+                align-items: center;
+                gap: 1.2rem;
+                padding: 2rem 1rem;
+                border-radius: 0 0 30px 30px;
+                transform: translateY(-150%);
+                opacity: 0;
+                visibility: hidden;
+                transition: transform 0.3s ease, opacity 0.2s ease, visibility 0.2s;
+                pointer-events: none;
+                z-index: 1090;
+            }
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+                pointer-events: all;
+            }
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 0.5rem;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #f0e0d0;
+            }
+            .nav-links a:last-child { border-bottom: none; }
+            .nav-links a[style*="color: black"] {
+                font-size: 1.6rem !important;
+                border-bottom: none;
+                margin-top: 10px;
+            }
+            .hamburger-icon.open span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .hamburger-icon.open span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger-icon.open span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .nav-links {
+                display: flex; 
+                position: static;
+                flex-direction: row;
+                background: transparent;
+                backdrop-filter: none;
+                box-shadow: none;
+                transform: none;
+                opacity: 1;
+                visibility: visible;
+                pointer-events: all;
+                padding: 0;
+                width: auto;
+            }
+            .hamburger-icon {
+                display: none;
+            }
+        }
+        
+        .about-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: none;
+            padding: 5.5rem 1rem 4rem 1rem;
+            flex: 1 0 auto;
+        }
+        
+        .about-card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(6px);
+            border-radius: 3rem 3rem 2rem 2rem;
+            padding: 2.5rem 1.8rem;
+            border: 1px solid rgba(255,255,240,0.6);
+        }
+        
+        .about-badge {
+            background: #ffd670;
+            color: #2d1f00;
+            border-radius: 40px;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .about-title {
+            font-weight: 800;
+            background: linear-gradient(125deg, #f0572d, #ff9248);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: calc(1.425rem + 2.1vw);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .content-card {
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            border: 1px solid rgba(255,255,240,0.6);
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-card h3 {
+            color: #1e1e2f;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .content-card h3 i {
+            color: #f0572d;
+            margin-right: 10px;
+        }
+        
+        .content-card p {
+            color: #4d3e30;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .content-card ul {
+            color: #4d3e30;
+            padding-left: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        .content-card li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .content-card li strong {
+            color: #f0572d;
+        }
+        
+        /* Extra addons special badge styling */
+        .addons-badge {
+            background: #fef5e8;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+        }
+        .addons-badge i {
+            color: #f0572d;
+            margin-right: 8px;
+        }
+        
+        .studio-card {
+            background: rgba(240,87,45,0.05);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin: 2rem 0 1rem 0;            
+        }
+        
+        .studio-card h4 {
+            color: #1e1e2f;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .studio-card .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .studio-card .service-item {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            border: 1px solid rgba(240,87,45,0.3);
+        }
+        
+        .studio-card .service-item i {
+            color: #f0572d;
+            margin-right: 6px;
+        }
+        
+        .studio-link {
+            color: #f0572d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .studio-link:hover {
+            text-decoration: underline;
+        }
+        
+        .official-tag {
+            font-size: 0.85rem;
+            color: #a0a0b0;
+            margin-top: 2.5rem;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .official-tag i {
+            color: #f0572d;
+        }
+        
+        .copyright-about {
+            position: absolute;
+            bottom: 12px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: #6c6c7c;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(2px);
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            z-index: 1050;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            border: 0.5px solid rgba(255,255,255,0.6);
+        }
+        .copyright-about i {
+            color: #f0572d;
+            margin-right: 5px;
+            font-size: 0.7rem;
+        }
+        
+        @media (max-width: 768px) {
+            .about-card {
+                padding: 1.5rem;
+            }
+            .content-card {
+                padding: 1.2rem;
+            }
+            .studio-card {
+                padding: 1.5rem;
+            }
+            .studio-card .services {
+                gap: 0.5rem;
+            }
+        }
+        
+        /* subtle hover effect */
+        .content-card:hover {
+            transition: all 0.2s ease;
+            background: rgba(255,255,255,0.7);
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-nav-bar">
+        <div class="nav-links" id="mobileNav">
+            <a href="/index.html">Home</a>
+            <a href="#" onclick="showDownloadPopup(event)">Manual</a>
+            <a href="about-us.html">About Us</a>
+            <a href="#" style="position: fixed; top: 0px; left: 20px; z-index: 1200; display: inline-block;">
+            </a>    
+        </div>
+        <button class="hamburger-icon" id="hamburgerBtn" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <div style="position: relative; min-height: 100vh; display: flex; flex-direction: column;">
+        <section class="about-section d-flex align-items-center" style="flex:1 0 auto;">
+            <div class="container px-3 px-lg-4">
+                <div class="about-card">
+                    
+                    <span class="about-badge"><i class="fas fa-info-circle me-2" style="color:#f0572d;"></i>About Us</span>
+                    
+                    <h1 class="about-title">Who we are &<br>what we do</h1>
+                    
+                    <div class="studio-card">
+                        <h4><i class="fas fa-code-branch me-2"></i> Part of 96 Studios</h4>
+                        <p>Fasfood is a service of <strong>96 Studios</strong> — a creative and technical studio based in South Africa. We are a graphic design studio offering a range of services:</p>
+                        
+                        <div class="services">
+                            <span class="service-item"><i class="fas fa-paint-brush"></i> Graphic Design</span>
+                            <span class="service-item"><i class="fas fa-laptop"></i> Computer & Software Maintenance</span>
+                            <span class="service-item"><i class="fas fa-camera"></i> Photography</span>
+                            <span class="service-item"><i class="fas fa-picture"></i> Wall Art & Deco</span>
+                        </div>
+                        
+                        <p>Visit our main site: <a href="https://96studios.co.za" target="_blank" class="studio-link">96studios.co.za <i class="fas fa-external-link-alt ms-1" style="font-size: 0.8rem;"></i></a></p>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h3><i class="fas fa-utensils"></i> What is Fasfood?</h3>
+                        <p>Fasfood is a service that helps small food shops, specifically Fastfood, Restaurants and Chisanyama, sell their food to more customers through a platform where people can order from them.</p>
+                        <p>The shop owner joins the platform and lists the food they sell. Customers can then discover local shops and order food online for pickup or delivery.</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="content-card" style="height: 100%;">
+                                <h3><i class="fas fa-store"></i> For Shop Owners</h3>
+                                <ul>
+                                    <li><strong>Monthly fee:</strong> Based on how many food items the shop wants to display (about R15 per menu item).</li>
+                                    <li><strong>Example:</strong> 10 items would cost around R150 per month.</li>
+                                    <li><strong>Optional till system:</strong> Helps manage orders and track sales for about R50 per month.</li>
+                                    <li><strong>Adverts:</strong> Shops can create adverts from R15/day.</li>
+                                    <!-- EXTRA ADDONS inserted right after the Adverts line: matches requirement -->
+                                    <li style="margin-top: 8px;"><strong>Extra addons:</strong> 3 Extra addons free and from 4 is R10 each</li>
+                                </ul>
+                                <!-- subtle extra visual hint for clarity (optional) -->
+                                <div class="addons-badge">
+                                    <i class="fas fa-gift"></i> <strong>Bonus:</strong> First 3 add-ons included at no cost. Additional add-ons (4+) only R10 each.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="content-card" style="height: 100%;">
+                                <h3><i class="fas fa-users"></i> For Customers</h3>
+                                <ul>
+                                    <li>Discover local food shops near you</li>
+                                    <li>Browse menus and prices</li>
+                                    <li>Order online for pickup or delivery</li>
+                                    <li>Support small businesses in your community</li>
+                                </ul>
+                                <div class="addons-badge mt-3" style="background: rgba(255,215,0,0.1);">
+                                    <i class="fas fa-chart-line"></i> Shops grow visibility with smart add-ons & daily ads.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extra explanatory row to reinforce add-on pricing (transparent but helpful) -->
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="content-card text-center" style="background: rgba(240,87,45,0.03);">
+                                <p class="mb-1"><i class="fas fa-calculator text-danger me-2"></i> <strong>Add‑on summary:</strong> 3 add‑ons free, from the 4th add‑on → <span class="fw-bold text-dark">R10 each</span> (ideal for extra features, menu highlights, priority placement).</p>
+                                <p class="mb-0 small text-muted">Combine with adverts to maximize daily reach.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card text-center" style="border: 2px dashed #f0572d; margin-top: 0.5rem;">
+                        <i class="fas fa-hand-holding-heart" style="font-size: 2.5rem; color: #f0572d; margin-bottom: 0.5rem;"></i>
+                        <p style="font-size: 1.1rem; font-weight: 500; margin-bottom: 0;">In simple terms, the shop pays a small monthly fee to be listed on the platform so customers can discover them and order food from them.</p>
+                    </div>
+                    
+                    <div class="official-tag">
+                       By 96 studios — creative & technical solutions
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="copyright-about">
+            <i class="far fa-copyright"></i> 2026 Fasfood. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburgerBtn');
+        const mobileNav = document.getElementById('mobileNav');
+
+        if (hamburger && mobileNav) {
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileNav.classList.toggle('active');
+                hamburger.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (event) => {
+                const isClickInsideNav = mobileNav.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && mobileNav.classList.contains('active')) {
+                    mobileNav.classList.remove('active');
+                    hamburger.classList.remove('open');
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1025) {
+                    mobileNav.classList.remove('active');
+                    hamburger.classList.remove('open');
+                }
+            });
+
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                    hamburger.classList.remove('open');
+                });
+            });
+        }
+
+        function goToHome() {
+            window.location.href = 'index.html'; 
+        }
+
+        function showDownloadPopup(event) {
+            event.preventDefault();
+            if (confirm("Do you want to download the manual.pdf file?")) {
+                const link = document.createElement('a');
+                link.href = 'manual.pdf';
+                link.download = 'manual.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        
+        // ensure any external link behavior is smooth
+        document.querySelectorAll('a[href^="https://"]').forEach(anchor => {
+            anchor.setAttribute('target', '_blank');
+            anchor.setAttribute('rel', 'noopener noreferrer');
+        });
+    </script>
+
+</body>
+</html>

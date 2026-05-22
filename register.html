@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="theme-color" content="#FF7B31">
+    <title>Fasfood · Register Your Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #fffaf5;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        .registration-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .header {
+            backdrop-filter: blur(6px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+        }
+        
+        .header-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .header-image {
+            width: 280px;
+            height: 180px;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .header-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(125deg, #f0572d, #ff9248);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+        }
+        
+        .badge-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: #ffd670;
+            color: #2d1f00;
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+        }
+        
+        .info-card, .form-card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(6px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,240,0.6);
+            height: fit-content;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e1e2f;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #f0572d;
+            border-radius: 3px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.5);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(240,87,45,0.1);
+        }
+        
+        .feature-item i {
+            color: #f0572d;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-item h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: #1e1e2f;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #f0e8e0;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            background: white;
+        }
+        
+        .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        
+        .plan-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .plan-card {
+            background: white;
+            border: 2px solid #f0e8e0;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            position: relative;
+        }
+        
+        .plan-card.selected {
+            border-color: #f0572d;
+            background: rgba(240,87,45,0.05);
+            box-shadow: 0 4px 12px rgba(240,87,45,0.15);
+        }
+        
+        .plan-card.popular {
+            border-color: #f0572d;
+            background: linear-gradient(135deg, #fff8f5, white);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #f0572d;
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .plan-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
+        
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f0572d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .plan-price small {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #6e6e73;
+        }
+        
+        .plan-features {
+            font-size: 0.7rem;
+            color: #6e6e73;
+            margin-top: 0.5rem;
+        }
+        
+        .plan-features i {
+            color: #10b981;
+            margin-right: 0.3rem;
+        }
+        
+        .menu-counter {
+            background: white;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 2px solid #f0e8e0;
+        }
+        
+        .counter-header {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        
+        .counter-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .counter-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #f0572d;
+            background: white;
+            color: #f0572d;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .counter-btn:hover {
+            background: #f0572d;
+            color: white;
+        }
+        
+        .counter-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f0572d;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .pricing-breakdown {
+            background: #f8fafc;
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            margin-top: 0.8rem;
+        }
+        
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            font-size: 0.85rem;
+        }
+        
+        .pricing-row.total {
+            font-weight: 800;
+            font-size: 1rem;
+            border-top: 2px solid #e2e8f0;
+            margin-top: 0.3rem;
+            padding-top: 0.5rem;
+            color: #f0572d;
+        }
+        
+        .warning-note {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 0.5rem;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .lite-fields {
+            background: #f8fafc;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .total-box {
+            background: linear-gradient(145deg, #f0572d, #ff9248);
+            color: white;
+            border-radius: 50px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.2rem 0;
+        }
+        
+        .total-amount {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+        
+        .custom-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        .checkmark-custom {
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border: 2px solid #f0572d;
+            border-radius: 6px;
+            display: inline-block;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .custom-checkbox input:checked ~ .checkmark-custom {
+            background-color: #f0572d;
+        }
+        .custom-checkbox input:checked ~ .checkmark-custom:after {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .checkbox-text {
+            font-size: 0.9rem;
+            color: #1e1e2f;
+            line-height: 1.4;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(125deg, #f0572d, #ff9248);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            width: 100%;
+            margin: 1.2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #1e1e2f;
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e1e2f;
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        
+        .page-shop { display: block; }
+        .page-menu { display: none; }
+        .page-menu.active { display: block; }
+        .page-shop.hide { display: none; }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.8rem;
+            background: #f8f9fc;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .step-number {
+            width: 34px;
+            height: 34px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .step.active .step-number {
+            background: linear-gradient(135deg, #f0572d, #ff9248);
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: #10b981;
+            color: white;
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        .menu-item-card {
+            background: #fefaf5;
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #f0e8e0;
+        }
+        
+        .extra-item-card {
+            background: #fefaf5;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #f0e8e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 2px solid #f0e8e0;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-outline-fas {
+            background: white;
+            border: 2px dashed #f0572d;
+            color: #f0572d;
+            padding: 0.7rem;
+            border-radius: 50px;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-outline-fas:hover {
+            background: #fef3c7;
+        }
+        
+        .btn-clone {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+        
+        .btn-clone:hover {
+            background: #059669;
+        }
+        
+        .whatsapp-instruction {
+            background: #dcfce7;
+            border: 1px solid #22c55e;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .brand-header {
+            background: linear-gradient(125deg, #f0572d, #ff9248);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+            color: white;
+        }
+        
+        .brand-header h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; }
+        .brand-header p { opacity: 0.9; margin-bottom: 0; }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.8fr;
+            gap: 1.8rem;
+        }
+        
+        .shop-summary-card, .menu-reg-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(240,87,45,0.2);
+        }
+        
+        .info-note {
+            background: #e0f2fe;
+            padding: 0.5rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            color: #0369a1;
+        }
+        
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .admin-panel.active {
+            display: block;
+        }
+        
+        .admin-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .registrations-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .registrations-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .registrations-table th,
+        .registrations-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+        }
+        
+        .registrations-table th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .btn-close-admin {
+            background: #f0572d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        
+        .search-box {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            width: 250px;
+        }
+        
+        .btn-view-details {
+            background: #f0572d;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        
+        .btn-view-details:hover {
+            background: #1e1e2f;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6e6e73;
+        }
+        
+        .modal-close:hover {
+            color: #f0572d;
+        }
+        
+        .btn-save-pdf {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+        
+        .btn-save-pdf:hover {
+            background: #b91c1c;
+        }
+        
+        .clone-selector {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+        }
+        
+        .clone-selector select {
+            padding: 0.3rem 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content, .main-grid { grid-template-columns: 1fr; }
+            .plan-selector { grid-template-columns: 1fr; }
+            .header-content { flex-direction: column; text-align: center; }
+            .section-title:after { left: 50%; transform: translateX(-50%); width: 60px; }
+            .section-title { text-align: center; }
+        }
+        
+        .loading { text-align: center; padding: 2rem; }
+    </style>
+</head>
+<body>
+
+<div id="adminPanel" class="admin-panel">
+    <div class="admin-container">
+        <div class="admin-header">
+            <h2><i class="fas fa-users"></i> Fasfood Registrations</h2>
+            <div>
+                <input type="text" id="adminSearch" class="search-box" placeholder="Search by shop name...">
+                <button class="btn-close-admin" id="closeAdminBtn">Close</button>
+            </div>
+        </div>
+        <div class="registrations-table" id="registrationsTable">
+            <div class="loading">Loading registrations...</div>
+        </div>
+    </div>
+</div>
+
+<div id="detailsModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+        <div id="modalDetailsContent"></div>
+        <button class="btn-save-pdf" id="savePdfBtn"><i class="fas fa-file-pdf"></i> Save as PDF</button>
+    </div>
+</div>
+
+<div class="registration-container">
+    <div class="header">
+        <div class="header-content">
+            <div class="header-text">
+                <h1>Register Your Food Business</h1>
+                <p>Join South Africa's fastest growing food platform for takeaways, restaurants & chisanyama</p>
+                <div class="badge-group">
+                    <span class="badge"><i class="fas fa-gift"></i> First month free</span>
+                    <span class="badge"><i class="fas fa-check-circle"></i> No commission</span>
+                    <span class="badge"><i class="fas fa-clock"></i> Cancel anytime</span>
+                </div>
+            </div>
+            <div class="header-image"><img src="mob1.jpg" alt="Food" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&auto=format&fit=crop'"></div>
+            <div class="header-image"><img src="mob.jpg" alt="Food" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&auto=format&fit=crop'"></div>
+        </div>
+    </div>
+
+    <div id="pageShop" class="page-shop">
+        <div class="main-content">
+            <div class="info-card">
+                <h2 class="section-title">Why partner with Fasfood?</h2>
+                <div class="feature-grid">
+                    <div class="feature-item"><i class="fas fa-users"></i><h4>Reach more customers</h4><p>Get discovered by hungry customers in your area</p></div>
+                    <div class="feature-item"><i class="fas fa-chart-simple"></i><h4>Grow your business</h4><p>Increase sales without expensive marketing</p></div>
+                    <div class="feature-item"><i class="fas fa-mobile-screen"></i><h4>Simple to use</h4><p>Easy dashboard on tablet or computer</p></div>
+                    <div class="feature-item"><i class="fas fa-wallet"></i><h4>Keep more profit</h4><p>No commission - just one low monthly fee</p></div>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <h2>Step 1: Register your shop</h2>
+                <form id="registration-form" onsubmit="return false;">
+                    <h3 style="font-size:1.1rem; font-weight:600;">Select your plan</h3>
+                    <div class="plan-selector" id="planSelector">
+                        <div class="plan-card" data-plan="Lite" data-base-price="49">
+                            <div class="plan-name">Lite</div>
+                            <div class="plan-price">R49<small>/month</small></div>
+                            <div class="plan-features"><i class="fab fa-whatsapp"></i> WhatsApp orders<br>Pricing: 15 items=R50 | 30=R100 | 45=R200</div>
+                        </div>
+                        <div class="plan-card popular" data-plan="Smart Menu" data-base-price="99">
+                            <div class="popular-badge">Most Popular</div>
+                            <div class="plan-name">Smart Menu</div>
+                            <div class="plan-price">R99<small>/month</small></div>
+                            <div class="plan-features"><i class="fas fa-chart-line"></i> Full dashboard<br><i class="fas fa-cash-register"></i> Till included<br>+R10 per extra item after 10</div>
+                        </div>
+                        <div class="plan-card" data-plan="Till Management" data-base-price="0">
+                            <div class="plan-name">Till Management</div>
+                            <div class="plan-price">R0<small>/month</small></div>
+                            <div class="plan-features"><i class="fas fa-receipt"></i> Free with Smart Menu</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-counter">
+                        <div class="counter-header"><strong><i class="fas fa-utensils"></i> Number of Menu Items</strong> <span class="text-muted">(Min: 5, Max: 50)</span></div>
+                        <div class="counter-control">
+                            <button type="button" class="counter-btn" id="menuMinus">−</button>
+                            <span class="counter-value" id="menuCount">10</span>
+                            <button type="button" class="counter-btn" id="menuPlus">+</button>
+                        </div>
+                        <div class="pricing-breakdown" id="pricingBreakdown"></div>
+                    </div>
+                    
+                    <h3 style="font-size:1.1rem; font-weight:600;">Business details</h3>
+                    <div class="form-group"><label>Shop name *</label><input type="text" id="shop-name" required></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Phone number *</label><input type="tel" id="shop-phone" required></div>
+                        <div class="form-group"><label>Email address</label><input type="email" id="shop-email"></div>
+                    </div>
+                    <div class="form-group"><label>Physical address *</label><textarea id="shop-address" rows="2" required></textarea></div>
+                    
+                    <h3 style="font-size:1.1rem; font-weight:600;">Owner information</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>Full name *</label><input type="text" id="owner-name" required></div>
+                        <div class="form-group"><label>WhatsApp number *</label><input type="tel" id="owner-phone" required></div>
+                    </div>
+                    <div class="form-group"><label>Owner ID number *</label><input type="text" id="owner-id" required></div>
+                    <div class="form-group"><label>Business registration (optional)</label><input type="text" id="business-reg"></div>
+                    
+                    <div id="liteFields" class="lite-fields" style="display:none;">
+                        <h4><i class="fab fa-whatsapp"></i> Lite Mode - Business WhatsApp</h4>
+                        <div class="form-group"><label>Business WhatsApp Number *</label><input type="tel" id="business-whatsapp"></div>
+                    </div>
+                    
+                    <div class="total-box"><span>Monthly total</span><span class="total-amount" id="monthly-total">R0</span></div>
+                    
+                    <label class="custom-checkbox">
+                    <input type="checkbox" id="terms-agree">
+                    <span class="checkmark-custom"></span>
+                    <span class="checkbox-text">I agree to the <a href="agreement.html" style="color:#f0572d;">Terms of Service</a></span>
+                    </label>
+
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="rules-agree">
+                        <span class="checkmark-custom"></span>
+                        <span class="checkbox-text">I have read and agree to the <a href="agreement.html" style="color:#f0572d;">Rules & Regulations</a></span>
+                    </label>
+
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="disclaimer-agree">
+                        <span class="checkmark-custom"></span>
+                        <span class="checkbox-text">I understand Fasfood is not responsible for customer disputes</span>
+                    </label>
+
+                    <button type="button" class="btn-primary" id="proceedToMenuBtn"><i class="fas fa-arrow-right"></i> Continue to Menu Setup →</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageMenu" class="page-menu">
+        <div class="brand-header">
+            <h1><i class="fas fa-utensils"></i> Step 2: Register Your Menu</h1>
+            <p>Add your menu items, free inclusions, and extra add-ons</p>
+        </div>
+        <div class="main-grid">
+            <div class="shop-summary-card">
+                <h3><i class="fas fa-store"></i> Shop Summary</h3>
+                <div id="shopSummary"></div>
+                <hr>
+                <div><strong>Required Menu Items:</strong> <span id="summaryItemCount">0</span></div>
+                <div><strong>Monthly Fee:</strong> <span id="summaryMonthlyFee">R0</span></div>
+                <div id="extraFeeSummary" class="mt-2 text-muted small"></div>
+            </div>
+            <div class="menu-reg-card">
+                <div class="progress-steps">
+                    <div class="step active" data-step="1"><div class="step-number">1</div><div>Menu Items</div></div>
+                    <div class="step" data-step="2"><div class="step-number">2</div><div>Free Inclusions</div></div>
+                    <div class="step" data-step="3"><div class="step-number">3</div><div>Extra Add-ons</div></div>
+                    <div class="step" data-step="4"><div class="step-number">4</div><div>Review</div></div>
+                </div>
+                
+                <div id="step1Section" class="form-section active">
+                    <div id="menuItemsContainer"></div>
+                    <div id="menuProgressWarning" class="warning-note" style="display:none;"></div>
+                    <button class="btn-primary" id="nextToStep2">Next: Add Free Inclusions →</button>
+                </div>
+                
+                <div id="step2Section" class="form-section">
+                    <div class="info-note mb-3">
+                        <i class="fas fa-info-circle"></i> These are FREE add-ons that come WITH each menu item (e.g., Lettuce, Tomato, Onion, Sauce)<br>
+                        <i class="fas fa-clone"></i> <strong>Pro tip:</strong> Click "Clone from previous item" to copy all add-ons from an earlier menu item!
+                    </div>
+                    <div id="itemAddonsContainer"></div>
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn-secondary" id="backToStep1">← Back</button>
+                        <button class="btn-primary" id="nextToStep3">Next: Extra Add-ons →</button>
+                    </div>
+                </div>
+                
+                <div id="step3Section" class="form-section">
+                    <div class="info-note mb-3">
+                        <i class="fas fa-info-circle"></i> Extra add-ons are SEPARATE items customers can add to any order.<br>
+                        <strong>Pricing: First 6 extra add-ons FREE, then R5 per extra add-on per month.</strong>
+                    </div>
+                    <div id="extrasContainer"></div>
+                    <button class="btn-outline-fas mb-3" id="addExtraBtn"><i class="fas fa-plus-circle"></i> + Add Extra Add-on</button>
+                    <div id="extraPricingDisplay" class="pricing-breakdown mt-2"></div>
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn-secondary" id="backToStep2">← Back</button>
+                        <button class="btn-primary" id="nextToStep4">Review & Submit →</button>
+                    </div>
+                </div>
+                
+                <div id="step4Section" class="form-section">
+                    <div id="finalReviewContainer"></div>
+                    <button class="btn-primary mt-3" id="completeRegistrationBtn"><i class="fas fa-check-circle"></i> Complete Registration</button>
+                    <div id="whatsappInstructions" class="whatsapp-instruction" style="display:none;">
+                        <strong><i class="fab fa-whatsapp"></i> Send Menu Images via WhatsApp</strong><br>
+                        After submitting, please send photos of each menu item to:<br>
+                        <strong>081 792 5033</strong><br>
+                        <small>Label each image with the item name (e.g., "1. Chicken Burger")</small><br>
+                        <a href="https://wa.me/27817925033" target="_blank" class="btn btn-success btn-sm mt-2"><i class="fab fa-whatsapp"></i> Open WhatsApp</a>
+                    </div>
+                    <button class="btn-secondary mt-2 w-100" id="backToStep3">← Back to Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyC6tbrawk7cwtlIV_girUgTjOxwYweXhOE",
+        authDomain: "fasfood-reg.firebaseapp.com",
+        projectId: "fasfood-reg",
+        storageBucket: "fasfood-reg.firebasestorage.app",
+        messagingSenderId: "705647244756",
+        appId: "1:705647244756:web:038cd2ee371b05f23b1241"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const registrationsRef = collection(db, "registrations");
+    
+    let selectedPlan = { name: "Smart Menu", basePrice: 99 };
+    let menuItemCount = 10;
+    let menuItems = [];
+    let nextItemId = 1;
+    let extraAddons = [];
+    let nextExtraId = 1;
+    let shopData = null;
+    let currentRegistrationData = null;
+    
+    function calculateMenuFee(planName, itemCount) {
+        if (itemCount <= 10) return 0;
+        if (planName === "Lite") {
+            if (itemCount <= 15) return 50;
+            else if (itemCount <= 30) return 100;
+            else if (itemCount <= 45) return 200;
+            else return 400;
+        } else {
+            return (itemCount - 10) * 10;
+        }
+    }
+    
+    function calculateExtraFee() {
+        const extraCount = extraAddons.length;
+        if (extraCount <= 6) return 0;
+        return (extraCount - 6) * 5;
+    }
+    
+    function calculateTotal() {
+        return selectedPlan.basePrice + calculateMenuFee(selectedPlan.name, menuItemCount) + calculateExtraFee();
+    }
+    
+    function updatePricingDisplay() {
+        const menuFee = calculateMenuFee(selectedPlan.name, menuItemCount);
+        const total = calculateTotal();
+        document.getElementById('pricingBreakdown').innerHTML = `
+            <div class="pricing-row"><span>Base plan (${selectedPlan.name}):</span><span>R${selectedPlan.basePrice}</span></div>
+            ${menuFee > 0 ? `<div class="pricing-row"><span>Menu fee:</span><span>+R${menuFee}</span></div>` : '<div class="pricing-row"><span>First 10 items:</span><span>Included</span></div>'}
+            <div class="pricing-row total"><span>Total monthly:</span><span>R${total}</span></div>
+        `;
+        document.getElementById('monthly-total').innerText = 'R' + total;
+    }
+    
+    document.getElementById('menuMinus')?.addEventListener('click', () => {
+        if (menuItemCount > 5) { menuItemCount--; document.getElementById('menuCount').innerText = menuItemCount; updatePricingDisplay(); }
+    });
+    document.getElementById('menuPlus')?.addEventListener('click', () => {
+        if (menuItemCount < 50) { menuItemCount++; document.getElementById('menuCount').innerText = menuItemCount; updatePricingDisplay(); }
+    });
+    
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedPlan = { name: card.dataset.plan, basePrice: parseInt(card.dataset.basePrice) };
+            if (selectedPlan.name === "Till Management") {
+                alert("Till Management is FREE with Smart Menu!");
+                document.querySelector('.plan-card[data-plan="Smart Menu"]').click();
+                return;
+            }
+            document.getElementById('liteFields').style.display = selectedPlan.name === "Lite" ? 'block' : 'none';
+            updatePricingDisplay();
+        });
+    });
+    
+    document.getElementById('proceedToMenuBtn')?.addEventListener('click', () => {
+        const shopName = document.getElementById('shop-name').value.trim();
+        const shopPhone = document.getElementById('shop-phone').value.trim();
+        const shopAddress = document.getElementById('shop-address').value.trim();
+        const ownerName = document.getElementById('owner-name').value.trim();
+        const ownerPhone = document.getElementById('owner-phone').value.trim();
+        const ownerId = document.getElementById('owner-id').value.trim();
+        const businessWhatsapp = document.getElementById('business-whatsapp')?.value.trim();
+        
+        if (!shopName || !shopPhone || !shopAddress || !ownerName || !ownerPhone || !ownerId) {
+            alert('Please fill all required fields');
+            return;
+        }
+        if (selectedPlan.name === "Lite" && !businessWhatsapp) {
+            alert('Please enter Business WhatsApp number for Lite mode');
+            return;
+        }
+        if (!document.getElementById('terms-agree').checked || !document.getElementById('rules-agree').checked || !document.getElementById('disclaimer-agree').checked) {
+            alert('Please agree to all terms');
+            return;
+        }
+        
+        shopData = {
+            shopName, shopPhone, shopEmail: document.getElementById('shop-email').value.trim(),
+            address: shopAddress, ownerName, ownerPhone, ownerId,
+            businessReg: document.getElementById('business-reg').value.trim() || null,
+            plan: selectedPlan.name, basePrice: selectedPlan.basePrice,
+            menuItemCount: menuItemCount, menuFee: calculateMenuFee(selectedPlan.name, menuItemCount),
+            monthlyTotal: calculateTotal(),
+            businessWhatsapp: selectedPlan.name === "Lite" ? businessWhatsapp : null
+        };
+        
+        document.getElementById('pageShop').classList.add('hide');
+        document.getElementById('pageMenu').classList.add('active');
+        initMenuSetup();
+    });
+    
+    function initMenuSetup() {
+        document.getElementById('shopSummary').innerHTML = `
+            <div><strong>${escapeHtml(shopData.shopName)}</strong></div>
+            <div>${escapeHtml(shopData.plan)} Plan</div>
+            <div>${shopData.shopPhone}</div>
+        `;
+        document.getElementById('summaryItemCount').innerText = shopData.menuItemCount;
+        
+        menuItems = [];
+        nextItemId = 1;
+        for (let i = 0; i < shopData.menuItemCount; i++) {
+            menuItems.push({ id: nextItemId++, name: '', price: 0, description: '', category: '', addons: [] });
+        }
+        
+        renderMenuItems();
+        renderItemAddons();
+        renderExtras();
+        updateExtraPricing();
+    }
+    
+    function renderMenuItems() {
+        const container = document.getElementById('menuItemsContainer');
+        const required = shopData.menuItemCount;
+        const filled = menuItems.filter(i => i.name && i.price > 0).length;
+        
+        container.innerHTML = menuItems.map((item, idx) => `
+            <div class="menu-item-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>Item ${idx+1} of ${required}</strong>
+                    <button onclick="window.deleteMenuItem(${item.id})" style="background:none;border:none;color:#dc2626;"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <input class="form-input" placeholder="Item name *" value="${escapeHtml(item.name)}" onchange="window.updateMenuItem(${item.id},'name',this.value)">
+                <input class="form-input" placeholder="Category (e.g., Burgers, Chicken)" value="${escapeHtml(item.category)}" onchange="window.updateMenuItem(${item.id},'category',this.value)">
+                <input class="form-input" type="number" step="0.01" placeholder="Customer price (R) *" value="${item.price}" onchange="window.updateMenuItem(${item.id},'price',parseFloat(this.value)||0)">
+                <textarea class="form-textarea" rows="2" placeholder="Description" onchange="window.updateMenuItem(${item.id},'description',this.value)">${escapeHtml(item.description)}</textarea>
+            </div>
+        `).join('');
+        
+        const warning = document.getElementById('menuProgressWarning');
+        if (filled < required) {
+            warning.style.display = 'block';
+            warning.innerHTML = `⚠️ Please fill all ${required} menu items. ${filled} of ${required} completed.`;
+        } else {
+            warning.style.display = 'none';
+        }
+    }
+    
+    window.deleteMenuItem = (id) => {
+        if (menuItems.length <= 5) {
+            alert("Minimum 5 menu items required");
+            return;
+        }
+        menuItems = menuItems.filter(i => i.id !== id);
+        renderMenuItems();
+        renderItemAddons();
+    };
+    
+   window.updateMenuItem = (id, field, val) => {
+    const item = menuItems.find(i => i.id === id);
+    if (item) {
+        item[field] = val;
+        if (document.getElementById('step2Section') && document.getElementById('step2Section').classList.contains('active')) {
+            renderItemAddons();
+        }
+    }
+};
+    
+window.cloneAddons = (targetItemId) => {
+    const selectElement = document.getElementById(`cloneSelect-${targetItemId}`);
+    if (!selectElement) {
+        alert("Error: Could not find clone selector");
+        return;
+    }
+    
+    const sourceItemId = selectElement.value;
+    
+    if (!sourceItemId || sourceItemId === "") {
+        alert("Please select a previous item to clone from");
+        return;
+    }
+    
+    const sourceItem = menuItems.find(i => i.id === parseInt(sourceItemId));
+    const targetItem = menuItems.find(i => i.id === targetItemId);
+    
+    if (!sourceItem) {
+        alert("Error: Source item not found");
+        return;
+    }
+    
+    if (!targetItem) {
+        alert("Error: Target item not found");
+        return;
+    }
+    
+    if (!sourceItem.addons || sourceItem.addons.length === 0) {
+        alert(`"${sourceItem.name || 'Item'}" has no add-ons to clone!`);
+        return;
+    }
+    
+    targetItem.addons = [...sourceItem.addons];
+    
+    alert(`✅ Cloned ${sourceItem.addons.length} add-ons from "${sourceItem.name}" to "${targetItem.name}"\n\nYou can now add or remove add-ons as needed.`);
+    
+    renderItemAddons();
+};
+    
+    function renderItemAddons() {
+    const container = document.getElementById('itemAddonsContainer');
+    
+    container.innerHTML = menuItems.map((item, idx) => {
+        const previousItems = [];
+        for (let i = 0; i < idx; i++) {
+            if (menuItems[i].addons && menuItems[i].addons.length > 0) {
+                previousItems.push({
+                    id: menuItems[i].id,
+                    name: menuItems[i].name || `Item ${i+1}`,
+                    addonCount: menuItems[i].addons.length
+                });
+            }
+        }
+        
+        const hasPreviousAddons = previousItems.length > 0;
+        
+        let cloneDropdown = '';
+        if (hasPreviousAddons) {
+            cloneDropdown = `
+                <div class="clone-selector" style="margin: 0.5rem 0; padding: 0.5rem; background: #f0fdf4; border-radius: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <i class="fas fa-clone" style="color:#10b981;"></i>
+                    <span style="font-size:0.75rem;">Clone add-ons from:</span>
+                    <select id="cloneSelect-${item.id}" style="flex:1; padding:0.3rem 0.5rem; border-radius:0.5rem; border:1px solid #10b981; background:white;">
+                        <option value="">-- Select item --</option>
+                        ${previousItems.map(prev => `<option value="${prev.id}">${escapeHtml(prev.name)} (${prev.addonCount} add-ons)</option>`).join('')}
+                    </select>
+                    <button class="btn-clone" onclick="window.cloneAddons(${item.id})" style="background:#10b981; color:white; border:none; padding:0.3rem 0.8rem; border-radius:0.5rem; cursor:pointer; font-size:0.75rem;">
+                        <i class="fas fa-copy"></i> Clone
+                    </button>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="menu-item-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 style="margin:0;">${idx+1}. ${item.name && item.name.trim() !== '' ? item.name : '⚠️ Please add name in Step 1 first'}</h6>
+                </div>
+                ${cloneDropdown}
+                <div id="addonList-${item.id}" class="d-flex flex-wrap gap-1 mt-2 mb-2">
+                    ${item.addons && item.addons.length ? 
+                        item.addons.map((a, i) => `<span class="badge bg-success" style="padding:0.3rem 0.6rem; border-radius:20px;">${escapeHtml(a)} <button onclick="window.removeAddon(${item.id},${i})" style="background:none;border:none;color:white;margin-left:0.3rem;">&times;</button></span>`).join('') 
+                        : '<span class="text-muted small">No free add-ons yet</span>'}
+                </div>
+                <div class="input-group d-flex gap-2" style="margin-top:0.5rem;">
+                    <input id="addonInput-${item.id}" class="form-control" placeholder="Free inclusion (e.g., Lettuce, Tomato, Cheese)" style="flex:1; padding:0.5rem; border:1px solid #e2e8f0; border-radius:0.5rem;">
+                    <button class="btn btn-sm btn-outline-success" onclick="window.addAddon(${item.id})" style="padding:0.3rem 0.8rem;">+ Add</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+    
+    window.addAddon = (id) => {
+        const input = document.getElementById(`addonInput-${id}`);
+        const val = input.value.trim();
+        if (val) {
+            const item = menuItems.find(i => i.id === id);
+            if (!item.addons) item.addons = [];
+            item.addons.push(val);
+            input.value = '';
+            renderItemAddons();
+        }
+    };
+    
+    window.removeAddon = (id, idx) => {
+        const item = menuItems.find(i => i.id === id);
+        item.addons.splice(idx, 1);
+        renderItemAddons();
+    };
+    
+    function renderExtras() {
+        const container = document.getElementById('extrasContainer');
+        if (extraAddons.length === 0) {
+            container.innerHTML = `<div class="text-center p-4 text-muted border rounded"><i class="fas fa-cube fa-2x"></i><p>No extra add-ons yet. Add items like Coke, Extra Cheese, Russian, etc.</p></div>`;
+            return;
+        }
+        container.innerHTML = extraAddons.map(ex => `
+            <div class="extra-item-card">
+                <div><strong>${escapeHtml(ex.name)}</strong> - Customer pays R${ex.price}<br><small>${escapeHtml(ex.description) || ''}</small></div>
+                <button onclick="window.deleteExtra(${ex.id})" class="btn btn-sm btn-outline-danger">Remove</button>
+            </div>
+        `).join('');
+    }
+    
+    window.deleteExtra = (id) => {
+        extraAddons = extraAddons.filter(ex => ex.id !== id);
+        renderExtras();
+        updateExtraPricing();
+        updateSummaryTotal();
+    };
+    
+    function updateExtraPricing() {
+        const extraCount = extraAddons.length;
+        const extraFee = calculateExtraFee();
+        const container = document.getElementById('extraPricingDisplay');
+        const chargedCount = Math.max(0, extraCount - 6);
+        container.innerHTML = `
+            <div class="pricing-row"><span>Extra add-ons count:</span><span>${extraCount}</span></div>
+            <div class="pricing-row"><span>Free (first 6):</span><span>${Math.min(6, extraCount)} included</span></div>
+            ${chargedCount > 0 ? `<div class="pricing-row"><span>Chargeable (${chargedCount} × R5):</span><span>+R${extraFee}/month</span></div>` : ''}
+            <div class="pricing-row total"><span>Extra add-ons fee:</span><span>R${extraFee}/month</span></div>
+        `;
+        updateSummaryTotal();
+    }
+    
+    function updateSummaryTotal() {
+        const total = calculateTotal();
+        document.getElementById('summaryMonthlyFee').innerText = 'R' + total;
+        const extraFee = calculateExtraFee();
+        document.getElementById('extraFeeSummary').innerHTML = extraFee > 0 ? `<small>+ R${extraFee} for extra add-ons</small>` : '';
+    }
+    
+    document.getElementById('addExtraBtn')?.addEventListener('click', () => {
+        const name = prompt("Enter extra add-on name (e.g., Coke, Extra Cheese, Russian):");
+        if (!name) return;
+        const price = parseFloat(prompt("Enter customer price (R):", "15"));
+        if (isNaN(price) || price <= 0) {
+            alert("Please enter a valid price");
+            return;
+        }
+        const description = prompt("Enter description (optional):", "");
+        extraAddons.push({ id: nextExtraId++, name: name, price: price, description: description });
+        renderExtras();
+        updateExtraPricing();
+    });
+    
+   function showStep(step) {
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step${step}Section`).classList.add('active');
+    document.querySelectorAll('.step').forEach((el, i) => {
+        el.classList.remove('active', 'completed');
+        if (i + 1 < step) el.classList.add('completed');
+        if (i + 1 === step) el.classList.add('active');
+    });
+    if (step === 2) renderItemAddons();
+    if (step === 4) renderFinalReview();
+}
+    
+    function validateStep1() {
+        const filled = menuItems.filter(i => i.name && i.price > 0).length;
+        if (filled < shopData.menuItemCount) {
+            alert(`Please fill all ${shopData.menuItemCount} menu items with names and prices`);
+            return false;
+        }
+        return true;
+    }
+    
+    function renderFinalReview() {
+        const container = document.getElementById('finalReviewContainer');
+        let itemsHtml = '';
+        menuItems.forEach((item, idx) => {
+            itemsHtml += `
+                <div class="review-block">
+                    <strong>${idx+1}. ${escapeHtml(item.name)}</strong> - R${item.price}<br>
+                    <small>Category: ${escapeHtml(item.category) || 'General'}</small><br>
+                    <small>${escapeHtml(item.description) || 'No description'}</small><br>
+                    <small><strong>Free inclusions:</strong> ${item.addons && item.addons.length ? item.addons.join(', ') : 'None'}</small>
+                </div>
+            `;
+        });
+        
+        let extrasHtml = '';
+        if (extraAddons.length > 0) {
+            extrasHtml = `<div class="review-block mt-2"><strong>Extra Add-ons (${extraAddons.length}):</strong><br>${extraAddons.map(ex => `${escapeHtml(ex.name)} - R${ex.price}`).join(', ')}<br><small class="text-muted">Extra fee: R${calculateExtraFee()}/month (first 6 free)</small></div>`;
+        }
+        
+        container.innerHTML = `
+            <div class="review-block"><strong>Shop:</strong> ${escapeHtml(shopData.shopName)}</div>
+            <div class="review-block"><strong>Plan:</strong> ${shopData.plan} - R${shopData.basePrice}/month</div>
+            <div class="review-block"><strong>Menu fee:</strong> R${shopData.menuFee}/month</div>
+            <div class="review-block"><strong>Extra add-ons fee:</strong> R${calculateExtraFee()}/month</div>
+            <div class="review-block"><strong>Total Monthly:</strong> R${calculateTotal()}</div>
+            <div class="review-block mt-2"><strong>Menu Items (${menuItems.length}):</strong></div>
+            ${itemsHtml}
+            ${extrasHtml}
+        `;
+    }
+    
+    document.getElementById('nextToStep2')?.addEventListener('click', () => { if (validateStep1()) showStep(2); });
+    document.getElementById('backToStep1')?.addEventListener('click', () => showStep(1));
+    document.getElementById('nextToStep3')?.addEventListener('click', () => showStep(3));
+    document.getElementById('backToStep2')?.addEventListener('click', () => showStep(2));
+    document.getElementById('nextToStep4')?.addEventListener('click', () => showStep(4));
+    document.getElementById('backToStep3')?.addEventListener('click', () => showStep(3));
+    
+    document.getElementById('completeRegistrationBtn')?.addEventListener('click', async () => {
+    const allItemsValid = menuItems.every(item => item.name && item.name.trim() !== '' && item.price > 0);
+    if (!allItemsValid) {
+        alert('Please ensure all menu items have a name and price');
+        showStep(1);
+        return;
+    }
+    
+    const registrationData = {
+        ...shopData,
+        menuItems: menuItems,
+        extraAddons: extraAddons,
+        extraFee: calculateExtraFee(),
+        finalTotal: calculateTotal(),
+        timestamp: Date.now(),
+        registrationDate: new Date().toISOString(),
+        status: 'pending'
+    };
+    
+    const btn = document.getElementById('completeRegistrationBtn');
+    const originalText = btn.innerHTML;
+    
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        btn.disabled = true;
+        
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timed out after 30 seconds')), 30000)
+        );
+        
+        const firebasePromise = addDoc(registrationsRef, registrationData);
+        
+        await Promise.race([firebasePromise, timeoutPromise]);
+        
+        document.getElementById('whatsappInstructions').style.display = 'block';
+        alert('✅ Registration submitted successfully!');
+        
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Complete Registration';
+        btn.disabled = false;
+        
+    } catch (error) {
+        console.error("Submission error:", error);
+        
+        let errorMessage = '❌ Error submitting registration.';
+        if (error.message.includes('permission') || error.message.includes('Missing or insufficient permissions')) {
+            errorMessage = '❌ Firebase permission denied. Please update Firestore rules to allow writes.';
+        } else if (error.message.includes('timed out')) {
+            errorMessage = '❌ Request timed out. Please check your internet connection and try again.';
+        } else {
+            errorMessage += `\n\n${error.message}`;
+        }
+        
+        alert(errorMessage);
+        
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+});
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'reg2030') {
+        document.getElementById('adminPanel').classList.add('active');
+        loadRegistrations();
+    }
+    
+    async function loadRegistrations(search = '') {
+        try {
+            const snapshot = await getDocs(query(registrationsRef, orderBy("timestamp", "desc")));
+            let regs = [];
+            snapshot.forEach(doc => regs.push({ id: doc.id, ...doc.data() }));
+            if (search) regs = regs.filter(r => r.shopName?.toLowerCase().includes(search.toLowerCase()));
+            
+            document.getElementById('registrationsTable').innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th><th>Shop Name</th><th>Plan</th><th>Menu Items</th><th>Extras</th><th>Total</th><th>Owner</th><th>Status</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${regs.map(reg => `
+                            <tr>
+                                <td>${new Date(reg.timestamp).toLocaleDateString()}</td>
+                                <td><strong>${escapeHtml(reg.shopName)}</strong></td>
+                                <td>${reg.plan}</td>
+                                <td>${reg.menuItems?.length || reg.menuItemCount || 0}</td>
+                                <td>${reg.extraAddons?.length || 0}</td>
+                                <td>R${reg.finalTotal || reg.monthlyTotal}</td>
+                                <td>${escapeHtml(reg.ownerName)}</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><button class="btn-view-details" onclick="viewRegistrationDetails('${reg.id}')"><i class="fas fa-eye"></i> View Menu</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (error) {
+            console.error("Error loading:", error);
+            document.getElementById('registrationsTable').innerHTML = '<div class="error">Error loading registrations.</div>';
+        }
+    }
+    
+    window.viewRegistrationDetails = async (docId) => {
+        try {
+            const docRef = doc(db, "registrations", docId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                currentRegistrationData = { id: docSnap.id, ...docSnap.data() };
+                showDetailsModal(currentRegistrationData);
+            } else {
+                alert("Registration not found");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error loading details");
+        }
+    };
+    
+    function showDetailsModal(data) {
+        const modal = document.getElementById('detailsModal');
+        const content = document.getElementById('modalDetailsContent');
+        
+        let menuItemsHtml = '';
+        if (data.menuItems && data.menuItems.length) {
+            data.menuItems.forEach((item, idx) => {
+                menuItemsHtml += `
+                    <div class="review-block" style="border-left: 3px solid #f0572d; margin-bottom: 1rem;">
+                        <strong>${idx+1}. ${escapeHtml(item.name)}</strong><br>
+                        <span class="badge bg-secondary">${escapeHtml(item.category) || 'General'}</span><br>
+                        <strong>Price:</strong> R${item.price}<br>
+                        <strong>Description:</strong> ${escapeHtml(item.description) || 'No description'}<br>
+                        <strong>Free Inclusions:</strong> ${item.addons && item.addons.length ? item.addons.join(', ') : 'None'}<br>
+                    </div>
+                `;
+            });
+        } else {
+            menuItemsHtml = '<p>No menu items found</p>';
+        }
+        
+        let extrasHtml = '';
+        if (data.extraAddons && data.extraAddons.length) {
+            extrasHtml = `
+                <div class="review-block mt-3">
+                    <strong>Extra Add-ons (${data.extraAddons.length}):</strong>
+                    <ul>
+                        ${data.extraAddons.map(ex => `<li>${escapeHtml(ex.name)} - R${ex.price} ${ex.description ? `(${escapeHtml(ex.description)})` : ''}</li>`).join('')}
+                    </ul>
+                    <small class="text-muted">Extra fee: R${data.extraFee || 0}/month (first 6 free, then R5 each)</small>
+                </div>
+            `;
+        }
+        
+        content.innerHTML = `
+            <h3><i class="fas fa-store"></i> ${escapeHtml(data.shopName)}</h3>
+            <hr>
+            <div class="row">
+                <div class="col-6"><strong>Plan:</strong> ${data.plan}</div>
+                <div class="col-6"><strong>Total Monthly:</strong> R${data.finalTotal || data.monthlyTotal}</div>
+                <div class="col-6"><strong>Owner:</strong> ${escapeHtml(data.ownerName)}</div>
+                <div class="col-6"><strong>Phone:</strong> ${data.ownerPhone}</div>
+                <div class="col-12"><strong>Address:</strong> ${escapeHtml(data.address)}</div>
+                <div class="col-12"><strong>Registration Date:</strong> ${new Date(data.timestamp).toLocaleString()}</div>
+            </div>
+            <hr>
+            <h4><i class="fas fa-utensils"></i> Menu Items (${data.menuItems?.length || 0})</h4>
+            ${menuItemsHtml}
+            ${extrasHtml}
+        `;
+        
+        modal.classList.add('active');
+    }
+    
+    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+        document.getElementById('detailsModal').classList.remove('active');
+    });
+    
+    document.getElementById('savePdfBtn')?.addEventListener('click', () => {
+        if (!currentRegistrationData) return;
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        let y = 20;
+        
+        doc.setFontSize(18);
+        doc.setTextColor(240, 87, 45);
+        doc.text('FASFOOD - REGISTRATION DETAILS', 105, y, { align: 'center' });
+        y += 10;
+        
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
+        doc.text(`Shop: ${currentRegistrationData.shopName}`, 20, y); y += 7;
+        doc.text(`Plan: ${currentRegistrationData.plan} - R${currentRegistrationData.finalTotal || currentRegistrationData.monthlyTotal}/month`, 20, y); y += 7;
+        doc.text(`Owner: ${currentRegistrationData.ownerName} (${currentRegistrationData.ownerPhone})`, 20, y); y += 7;
+        doc.text(`Address: ${currentRegistrationData.address}`, 20, y); y += 7;
+        doc.text(`Registered: ${new Date(currentRegistrationData.timestamp).toLocaleString()}`, 20, y); y += 10;
+        
+        doc.setFontSize(14);
+        doc.setTextColor(240, 87, 45);
+        doc.text('MENU ITEMS', 20, y); y += 7;
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        
+        if (currentRegistrationData.menuItems) {
+            currentRegistrationData.menuItems.forEach((item, idx) => {
+                if (y > 270) { doc.addPage(); y = 20; }
+                doc.text(`${idx+1}. ${item.name} - R${item.price}`, 20, y); y += 5;
+                doc.text(`   Category: ${item.category || 'General'}`, 25, y); y += 4;
+                doc.text(`   Description: ${(item.description || 'No description').substring(0, 50)}`, 25, y); y += 4;
+                doc.text(`   Free inclusions: ${item.addons && item.addons.length ? item.addons.join(', ') : 'None'}`, 25, y); y += 6;
+            });
+        }
+        
+        if (currentRegistrationData.extraAddons && currentRegistrationData.extraAddons.length) {
+            if (y > 250) { doc.addPage(); y = 20; }
+            doc.setFontSize(12);
+            doc.setTextColor(240, 87, 45);
+            doc.text('EXTRA ADD-ONS', 20, y); y += 7;
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            currentRegistrationData.extraAddons.forEach((ex, idx) => {
+                doc.text(`${idx+1}. ${ex.name} - R${ex.price}`, 20, y); y += 5;
+                if (ex.description) doc.text(`   ${ex.description.substring(0, 40)}`, 25, y); y += 4;
+            });
+        }
+        
+        doc.save(`${currentRegistrationData.shopName}_Fasfood_Registration.pdf`);
+    });
+    
+    document.getElementById('adminSearch')?.addEventListener('input', e => loadRegistrations(e.target.value));
+    document.getElementById('closeAdminBtn')?.addEventListener('click', () => document.getElementById('adminPanel').classList.remove('active'));
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    document.querySelector('.plan-card[data-plan="Smart Menu"]').classList.add('selected');
+    updatePricingDisplay();
+</script>
+</body>
+</html>
